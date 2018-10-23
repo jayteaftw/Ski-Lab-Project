@@ -105,7 +105,6 @@ int main(void)
 
 
         default:
-              return 0;
               printf("Error. Invalid Keystroke. Please try again.\n");
 
 
