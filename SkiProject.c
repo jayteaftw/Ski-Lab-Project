@@ -227,6 +227,87 @@ void group_search(void)
   return;
 }
 
+int priority()
+{
+  char phone_number[8];
+  int i, j, group_size, flag;
+  flag =1;
+  printf("What is your name?\n");
+    scanf(" %s", &name1);
+    
+    for(i = 0;  i < 5; i++)
+    {
+      if(strcmp (schedule[i], name1) == 0)
+      { 
+        flag = 0;
+        printf("The name %s has already been scheduled.\n", name1);
+        break;
+      }
+    }
+    
+    if(flag == 1)
+    {
+      printf("How many? No more than 4\n");
+      scanf(" %d", &group_size);
+      if(group_size > 0 && group_size < 5)
+      {
+        printf("Phone Number?\n");
+        scanf(" %s", &phone_number);
+
+        if(schedule[4][0] != '\0')
+        {
+          printf("%s has been canceled. Phone number is %s. Group size is %d.\n", schedule[4], phone[4], groups[4]);
+        }
+        //Copies Over previous position of Phone Array to current position of Phone Array
+        for(j = 0; j < 7; j++)
+        {
+          phone[4][j] = phone[3][j];
+          phone[3][j] = phone[2][j];
+          phone[2][j] = phone[1][j];
+          phone[1][j] = phone[0][j];
+          phone[0][j] = phone_number[j];
+        }
+        
+        // Copies  Previous Group Size to  current Group Array
+        groups[4] =  groups[3];
+        groups[3] =  groups[2];
+        groups[2] =  groups[1];
+        groups[1] =  groups[0];
+        groups[0] = group_size;
+
+        //Copies Over previous position of Schedule Array to current position of schedule array
+        for(j = 0; j < 19; j++)
+        {
+           schedule[4][j] = schedule[3][j];
+           schedule[3][j] = schedule[2][j];
+           schedule[2][j] = schedule[1][j];
+           schedule[1][j] = schedule[0][j];
+          schedule[0][j] = name1[j];
+        }
+
+        printf("%s, is scheduled for %d pm.\n", schedule[0], 1);
+        i = 1;
+        while(schedule[i][0] != '\0' && i < 5)
+        {
+          printf("%s has been changed to %d pm. Phone number is %s. Group size is %d.\n", schedule[i], i + 1, phone[i], groups[i]);
+          i++;
+        }
+
+        if(count < 5)
+        {
+          count += 1;
+        }
+        return 1;
+      }
+      else 
+      {
+        printf("Invalid Party Size.\n");
+
+      }
+    }
+  
+}
+
 void quit_system(void)
 {
   printf("Come again!\n");
@@ -236,10 +317,11 @@ void quit_system(void)
 
 int main(void)
 {
-  int i, j;
+  int i, j, priority_flag;
   int input;
   input = 0;
-  
+  priority_flag = 0;
+
   for(i = 0; i < 5; i++)
   {
     for(j = 0; j < 20; j++)
@@ -252,7 +334,7 @@ int main(void)
   }
 
   //Prompt
-  printf("Welcome.\n Enter\n 1 for Scheduling,\n 2 for Canceling,\n 3 for Available times,\n 4 for Letter Search,\n 5 for Group Search,\n and 9 for Exiting Sysetm: \n ");
+  printf("Welcome.\n Enter\n 1 for Scheduling,\n 2 for Canceling,\n 3 for Available times,\n 4 for Letter Search,\n 5 for Group Search,\n 6 for Priority,\n and 9 for Exiting Sysetm: \n ");
   while(on == 1)
   {
     input = 0;
@@ -287,6 +369,20 @@ int main(void)
         case 5:
           group_search();
         break;
+
+        //Priority 
+        case 6:
+          if(priority_flag == 0)
+          {
+            priority_flag =  priority();
+            break;
+          }
+          else
+          {
+            printf("Priority already used.\n");
+            break;
+          }
+        
         
         //Quit System
         case 9:
